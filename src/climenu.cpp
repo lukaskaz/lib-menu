@@ -32,7 +32,7 @@ void Menu::run() const
 
         system("clear");
         std::cout << "== " << title << " menu ==\n";
-        for (const auto& entry : this->entries)
+        for (const auto& entry : entries)
         {
             const auto& info = std::get<std::string>(entry);
             std::cout << ++num << " : to " << info << "\n";
@@ -41,9 +41,13 @@ void Menu::run() const
 
         if (auto sel = getusersel() - 1; sel < num)
         {
-            std::get<func>(this->entries.at(sel))();
+            std::get<func>(entries.at(sel))();
             std::cout << "Press enter to return to menu\n";
-            waitenterpressed();
         }
+        else
+        {
+            std::cerr << "Maximum selection item is " << entries.size() << "\n";
+        }
+        waitenterpressed();
     }
 }
