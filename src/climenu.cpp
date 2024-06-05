@@ -1,19 +1,39 @@
 #include "climenu.hpp"
 
-#include <poll.h>
+#include <sys/epoll.h>
+#include <unistd.h>
 
 #include <iostream>
+#include <stdexcept>
+
+Menu::Menu(const std::string& title,
+           std::vector<std::pair<std::string, func>>&& entries) :
+    title{title},
+    entries{std::move(entries)}
+{
+    throw std::runtime_error("No menu entries given");
+}
 
 bool Menu::isenterpressed(int32_t timeoutMs)
 {
-    pollfd pollFd{fileno(stdin), POLLIN, 0};
-    if (0 < poll(&pollFd, 1, timeoutMs) && pollFd.revents & POLLIN)
+    bool ret = false;
+    auto epollfd = epoll_create1(0);
+    if (epollfd >= 0)
     {
-        while (getchar() != '\n')
-            ;
-        return true;
+        auto fd = fileno(stdin);
+        epoll_event event{.events = EPOLLIN, .data = {.fd = fd}}, revent{};
+
+        epoll_ctl(epollfd, EPOLL_CTL_ADD, fd, &event);
+        if (0 < epoll_wait(epollfd, &revent, 1, timeoutMs) &&
+            revent.events & EPOLLIN)
+        {
+            while (getchar() != '\n')
+                ;
+            ret = true;
+        }
+        close(epollfd);
     }
-    return false;
+    return ret;
 }
 
 inline uint32_t Menu::getusersel() const

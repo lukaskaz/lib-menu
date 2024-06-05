@@ -7,11 +7,7 @@ using func = std::function<void()>;
 class Menu
 {
   public:
-    Menu(const std::string& title,
-         std::vector<std::pair<std::string, func>>&& entries) :
-        title{title},
-        entries{std::move(entries)}
-    {}
+    Menu(const std::string&, std::vector<std::pair<std::string, func>>&&);
 
     void run() const;
 
