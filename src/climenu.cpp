@@ -11,7 +11,10 @@ Menu::Menu(const std::string& title,
     title{title},
     entries{std::move(entries)}
 {
-    throw std::runtime_error("No menu entries given");
+    if (this->entries.empty())
+    {
+        throw std::runtime_error("No menu entries given");
+    }
 }
 
 bool Menu::isenterpressed(int32_t timeoutMs)
