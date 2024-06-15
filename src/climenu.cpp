@@ -51,10 +51,10 @@ void Menu::run() const
 {
     while (true)
     {
-        uint32_t num{};
-
         system("clear");
         std::cout << "== " << title << " menu ==\n";
+
+        uint32_t num{};
         for (const auto& entry : entries)
         {
             const auto& info = std::get<std::string>(entry);
@@ -62,15 +62,22 @@ void Menu::run() const
         }
         std::cout << "-> ";
 
-        if (auto sel = getusersel() - 1; sel < num)
+        uint32_t sel{};
+        if (sel = getusersel(); sel < num)
         {
-            std::get<func>(entries.at(sel))();
+            std::get<func>(entries.at(sel - 1))();
             std::cout << "Press enter to return to menu\n";
         }
-        else
+        else if (sel > num)
         {
             std::cerr << "Maximum selection item is " << entries.size() << "\n";
         }
+        else
+        {
+            break;
+        }
+
         waitenterpressed();
     }
 }
+
