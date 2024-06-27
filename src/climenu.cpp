@@ -3,6 +3,7 @@
 #include <sys/epoll.h>
 #include <unistd.h>
 
+#include <charconv>
 #include <iostream>
 #include <stdexcept>
 
@@ -39,12 +40,28 @@ bool Menu::isenterpressed(int32_t timeoutMs)
     return ret;
 }
 
+int32_t Menu::getnumfromstr(std::string_view sv)
+{
+    int32_t num{};
+    const auto sstart = sv.data(), send = sv.data() + sv.size();
+    if (const auto ret = std::from_chars(sstart, send, num);
+        ret.ec == std::errc{} && ret.ptr == send)
+    {
+        return num;
+    }
+    throw std::runtime_error(std::string(__func__) +
+                             ": string not contain number");
+}
+
 inline uint32_t Menu::getusersel() const
 {
-    uint32_t sel = getchar() - '0';
-    while ('\n' != getchar())
-        ;
-    return sel;
+    char inch{};
+    std::string instr;
+    while ((inch = (char)getchar()) != '\n')
+    {
+        instr += inch;
+    }
+    return getnumfromstr(instr);
 }
 
 void Menu::run() const
@@ -81,4 +98,3 @@ void Menu::run() const
         waitenterpressed();
     }
 }
-
