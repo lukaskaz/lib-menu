@@ -19,6 +19,7 @@ class Menu
     }
 
     static bool isenterpressed(int32_t timeoutMs = 0);
+    static int32_t getnumfromstr(std::string_view);
 
   private:
     const std::string title;
