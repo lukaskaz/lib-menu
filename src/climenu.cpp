@@ -59,7 +59,10 @@ inline uint32_t Menu::getusersel() const
     std::string instr;
     while ((inch = (char)getchar()) != '\n'  || instr.empty())
     {
-        instr += inch;
+        if (inch != '\n')
+        {
+            instr += inch;
+        }
     }
     return getnumfromstr(instr);
 }
