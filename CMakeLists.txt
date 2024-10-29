@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 set(CMAKE_CXX_STANDARD 20)
 
-project(climenu)
+project(menu)
 
 include(cmake/dependencies.cmake)
 include(cmake/flags.cmake)
@@ -12,6 +12,8 @@ if(RUN_TESTS)
     enable_testing()
     add_subdirectory(tests)
 endif()
+
+add_subdirectory(examples)
 
 include_directories(inc)
 file(GLOB SOURCES "src/*.cpp")
