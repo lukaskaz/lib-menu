@@ -19,3 +19,5 @@ include_directories(inc)
 file(GLOB SOURCES "src/*.cpp")
 
 add_library(${PROJECT_NAME} ${SOURCES})
+add_dependencies(${PROJECT_NAME} liblogger)
+# target_link_libraries(${PROJECT_NAME} logger)

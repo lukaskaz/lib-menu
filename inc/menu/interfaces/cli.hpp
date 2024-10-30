@@ -17,7 +17,7 @@ class Menu : public MenuIf
 
   private:
     friend class menu::MenuFactory;
-    Menu(const std::string&, menuentries&&);
+    Menu(std::shared_ptr<logging::LogIf>, const std::string&, menuentries&&);
     struct Handler;
     std::unique_ptr<Handler> handler;
 };
