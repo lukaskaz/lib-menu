@@ -12,12 +12,12 @@ class Menu : public MenuIf
     ~Menu();
 
     void run() const override;
-    bool isenterpressed() const override;
     std::string info() const override;
+    static bool isenterpressed();
 
   private:
     friend class menu::MenuFactory;
-    Menu(const std::string&, menuentries&&);
+    Menu(std::shared_ptr<logging::LogIf>, const std::string&, menuentries&&);
     struct Handler;
     std::unique_ptr<Handler> handler;
 };

@@ -18,7 +18,6 @@ class MenuIf
     virtual ~MenuIf() = default;
 
     virtual void run() const = 0;
-    virtual bool isenterpressed() const = 0;
     virtual std::string info() const = 0;
 };
 
